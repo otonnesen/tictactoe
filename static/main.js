@@ -49,7 +49,24 @@ function handleClick(e) {
 	console.log('('+e.clientX+','+e.clientY+')');
 	let x = e.clientX;
 	let y = e.clientY;
+	let X, Y;
+	if (x < gameArea.canvas.width/3) {
+		X = 0;
+	} else if (x < 2*gameArea.canvas.width/3) {
+		X = 1;
+	} else if (x < gameArea.canvas.width) {
+		X = 2;
+	}
+	
+	if (y < gameArea.canvas.height/3) {
+		Y = 0;
+	} else if (y < 2*gameArea.canvas.height/3) {
+		Y = 1;
+	} else if (y < gameArea.canvas.height) {
+		Y = 2;
+	}
+	return {
+		x: X,
+		y: Y,
+	}
 }
-
-drawO(0, 2);
-drawX(1, 2);
