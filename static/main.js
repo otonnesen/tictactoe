@@ -43,13 +43,13 @@ function drawO(x, y) {
 	gameArea.ctx.fillText('O', gameArea.canvas.width/6 - 2*gameArea.canvas.width/18 + x*gameArea.canvas.width/3, gameArea.canvas.height/6 + 2*gameArea.canvas.width/18 + y*gameArea.canvas.height/3);
 }
 
-function getMousePos(canvas, e) {
-	var rect = canvas.getBoundingClientRect();
-	return {
-		x: e.clientX - rect.left,
-		y: e.clientY - rect.top
-	};
+document.addEventListener('click', handleClick, false);
+
+function handleClick(e) {
+	console.log('('+e.clientX+','+e.clientY+')');
+	let x = e.clientX;
+	let y = e.clientY;
 }
 
-drawO(0, 2
+drawO(0, 2);
 drawX(1, 2);
