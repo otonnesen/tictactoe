@@ -1,6 +1,9 @@
 package game
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/otonnesen/tictactoe/api"
 )
 
@@ -13,7 +16,19 @@ func New() *Game {
 	return &Game{1, [][]int{[]int{0, 0, 0}, []int{0, 0, 0}, []int{0, 0, 0}}}
 }
 
-func (g Game) CheckMove(m *api.MoveRequest) bool {
+func (g Game) String() string {
+	var b strings.Builder
+	for x := range g.Board {
+		for y := range g.Board[0] {
+			fmt.Fprintf(&b, "%d ", g.Board[x][y])
+		}
+		fmt.Fprintf(&b, "\n")
+	}
+
+	return b.String()
+}
+
+func (g *Game) CheckMove(m *api.MoveRequest) bool {
 	if m.Player != g.Player {
 		return false
 	}
@@ -22,6 +37,7 @@ func (g Game) CheckMove(m *api.MoveRequest) bool {
 		return false
 	}
 
+	g.applyMove(m)
 	return true
 }
 
@@ -35,76 +51,71 @@ func (g *Game) applyMove(m *api.MoveRequest) {
 
 }
 
-func (g *Game) CheckVictory() int{
+func (g *Game) CheckVictory() int {
 
-	if(g.Board[0][0]!=0){
-		if(g.Board[0][0] == g.Board[0][1] && g.Board[0][2] == g.Board[0][0]) {
+	if g.Board[0][0] != 0 {
+		if g.Board[0][0] == g.Board[0][1] && g.Board[0][2] == g.Board[0][0] {
 			return g.Board[0][0]
-    else {
+		} else {
 			return 0
-	  }
+		}
 	}
 
-	if(g.Board[1][0]!=0){
-		if(g.Board[1][0] == g.Board[1][1] && g.Board[1][2] == g.Board[1][0]) {
+	if g.Board[1][0] != 0 {
+		if g.Board[1][0] == g.Board[1][1] && g.Board[1][2] == g.Board[1][0] {
 			return g.Board[1][0]
-		} 
-    else {
+		} else {
 			return 0
 		}
 	}
 
-	if(g.Board[2][0]!=0){
-		if(g.Board[2][0] == g.Board[2][1] && g.Board[2][2] == g.Board[2][0]) {
+	if g.Board[2][0] != 0 {
+		if g.Board[2][0] == g.Board[2][1] && g.Board[2][2] == g.Board[2][0] {
 			return g.Board[2][0]
-		} 
-		else {
+		} else {
 			return 0
 		}
 	}
 
-	if(g.Board[0][0]!=0){
-		if(g.Board[0][0] == g.Board[1][0] && g.Board[2][0] == g.Board[0][0]) {
+	if g.Board[0][0] != 0 {
+		if g.Board[0][0] == g.Board[1][0] && g.Board[2][0] == g.Board[0][0] {
 			return g.Board[0][0]
-		} 
-		else {
+		} else {
 			return 0
 		}
 	}
-	
-	if(g.Board[0][1]!=0){
-		if(g.Board[0][1] == g.Board[1][1] && g.Board[2][1] == g.Board[0][1]) {
+
+	if g.Board[0][1] != 0 {
+		if g.Board[0][1] == g.Board[1][1] && g.Board[2][1] == g.Board[0][1] {
 			return g.Board[0][1]
-		}
-		else {
+		} else {
 			return 0
 		}
 	}
 
-	if(g.Board[0][2]!=0){
-		if(g.Board[0][2] == g.Board[1][2] && g.Board[2][2] == g.Board[0][2]) {
+	if g.Board[0][2] != 0 {
+		if g.Board[0][2] == g.Board[1][2] && g.Board[2][2] == g.Board[0][2] {
 			return g.Board[0][2]
-		}
-		else {
+		} else {
 			return 0
 		}
 	}
 
-	if(g.Board[0][0]!=0){
-		if(g.Board[0][0] == g.Board[1][1] && g.Board[2][2] == g.Board[0][0]) {
+	if g.Board[0][0] != 0 {
+		if g.Board[0][0] == g.Board[1][1] && g.Board[2][2] == g.Board[0][0] {
 			return g.Board[0][0]
-		}
-		else {
+		} else {
 			return 0
 		}
 	}
-	
-	if(g.Board[0][2]!=0){
-		if(g.Board[0][2] == g.Board[1][1] && g.Board[2][0] == g.Board[0][2]) {
+
+	if g.Board[0][2] != 0 {
+		if g.Board[0][2] == g.Board[1][1] && g.Board[2][0] == g.Board[0][2] {
 			return g.Board[0][2]
-		}
-		else {
+		} else {
 			return 0
 		}
 	}
+
+	return 0
 }

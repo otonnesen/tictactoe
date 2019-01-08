@@ -6,9 +6,8 @@ import (
 )
 
 type MoveRequest struct {
-	ID     string `json:"id"`
-	Player int    `json:"player"`
-	Move   []int  `json:"move"`
+	Player int   `json:"player"`
+	Move   []int `json:"move"`
 }
 
 type MoveResponse struct {

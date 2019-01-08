@@ -22,7 +22,7 @@ func Test(w http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		Error.Printf("Bad move request: %v\n", err)
 	}
-	resp := &api.MoveResponse{true, false}
+	resp := &api.MoveResponse{true, 0}
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(resp)
 }
@@ -32,14 +32,25 @@ func Id(w http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case http.MethodGet:
 		w.Header().Set("Content-Type", "text/plain")
-		fmt.Fprintf(w, "%+v", games[id])
+		if g, ok := games[id]; ok {
+			fmt.Fprintf(w, "%s", g)
+		} else {
+			fmt.Fprintf(w, "Not a valid game")
+		}
 	case http.MethodPost:
-		m, err := NewMoveRequest(req)
+		m, err := api.NewMoveRequest(req)
 		if err != nil {
 			Error.Printf("Bad move request: %v\n", err)
 		}
 		g := games[id]
-		resp := &api.MoveResponse{g.CheckMove(m), g.CheckVictory()}
+		valid := g.CheckMove(m)
+		done := g.CheckVictory()
+		resp := &api.MoveResponse{valid, done}
+		if valid {
+			Info.Printf("Valid move: %s\n%s", id, g)
+		} else {
+			Info.Printf("Invalid move: %s", id)
+		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(resp)
 	}
@@ -59,6 +70,6 @@ func Start(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 	games[id] = game.New()
-	Info.Printf("Created game %s", id)
+	Info.Printf("Created game %s:\n%v", id, games[id])
 	http.Redirect(w, req, "/id/"+id, http.StatusMovedPermanently)
 }
