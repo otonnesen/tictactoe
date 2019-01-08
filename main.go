@@ -1,31 +1,24 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"net/http"
-
-	"github.com/otonnesen/tictactoe/api"
+	"os"
 )
 
 func main() {
-	http.HandleFunc("/", Root)
-	http.HandleFunc("/game", Game)
+	port := os.Getenv("PORT") // Get Heroku port
 
-	http.ListenAndServe(":8080", nil)
-}
-
-func Root(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "text/plain")
-	fmt.Fprintf(w, "Hello World")
-}
-
-func Game(w http.ResponseWriter, req *http.Request) {
-	_, err := api.NewMoveRequest(req)
-	if err != nil {
-		panic(err)
+	if port == "" {
+		InitLogger(os.Stdout, os.Stdout, os.Stdout, true)
+		Info.Printf("$PORT not set, defaulting to 8080")
+		port = "8080"
+	} else {
+		InitLogger(os.Stdout, os.Stdout, os.Stdout, false)
 	}
-	resp := &api.MoveResponse{true, [][]int{[]int{0}}, 1, false}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
+
+	http.HandleFunc("/", LogRequest(Root))
+	http.HandleFunc("/game", LogRequest(Game))
+
+	Info.Printf("Server running on port %s\n", port)
+	http.ListenAndServe(":"+port, nil)
 }
