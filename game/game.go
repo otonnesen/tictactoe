@@ -21,7 +21,7 @@ func (g Game) CheckMove(m *api.MoveRequest) bool {
 	if g.Board[m.Move[0]][m.Move[1]] != 0 {
 		return false
 	}
-
+	g.applyMove(m)
 	return true
 }
 
@@ -33,4 +33,5 @@ func (g *Game) applyMove(m *api.MoveRequest) {
 		g.Player = 1
 	}
 
+	// TODO Check if victory
 }

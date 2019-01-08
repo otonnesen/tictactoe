@@ -29,8 +29,20 @@ func Test(w http.ResponseWriter, req *http.Request) {
 
 func Id(w http.ResponseWriter, req *http.Request) {
 	id := req.URL.Path[len("/id/"):]
-	w.Header().Set("Content-Type", "text/plain")
-	fmt.Fprintf(w, "%+v", games[id])
+	switch req.Method {
+	case http.MethodGet:
+		w.Header().Set("Content-Type", "text/plain")
+		fmt.Fprintf(w, "%+v", games[id])
+	case http.MethodPost:
+		m, err := NewMoveRequest(req)
+		if err != nil {
+			Error.Printf("Bad move request: %v\n", err)
+		}
+		g := games[id]
+		resp := &api.MoveResponse{g.CheckMove(m), g.CheckVictory()}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+	}
 }
 
 func Start(w http.ResponseWriter, req *http.Request) {

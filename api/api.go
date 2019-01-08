@@ -12,8 +12,8 @@ type MoveRequest struct {
 }
 
 type MoveResponse struct {
-	Valid bool `json:"valid"`
-	Done  bool `json:"done"`
+	Valid  bool `json:"valid"`
+	Victor int  `json:"victor"`
 }
 
 func NewMoveRequest(req *http.Request) (*MoveRequest, error) {
