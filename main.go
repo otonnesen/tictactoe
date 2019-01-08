@@ -17,7 +17,9 @@ func main() {
 	}
 
 	http.HandleFunc("/", LogRequest(Root))
-	http.HandleFunc("/game", LogRequest(Game))
+	http.HandleFunc("/game/", LogRequest(Game))
+	http.HandleFunc("/newgame", LogRequest(NewGame))
+	http.HandleFunc("/test", LogRequest(Test))
 
 	Info.Printf("Server running on port %s\n", port)
 	http.ListenAndServe(":"+port, nil)
