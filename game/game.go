@@ -21,7 +21,7 @@ func (g Game) CheckMove(m *api.MoveRequest) bool {
 	if g.Board[m.Move[0]][m.Move[1]] != 0 {
 		return false
 	}
-	g.applyMove(m)
+
 	return true
 }
 
@@ -33,5 +33,47 @@ func (g *Game) applyMove(m *api.MoveRequest) {
 		g.Player = 1
 	}
 
-	// TODO Check if victory
+}
+
+func (g *Game) CheckVictory() int{
+
+	if(g.Board[0][0]!=0){
+		if(g.Board[0][0] == g.Board[0][1] && g.Board[0][2] == g.Board[0][0]) return g.Board[0][0]
+		else return 0
+	}
+
+	if(g.Board[1][0]!=0){
+		if(g.Board[1][0] == g.Board[1][1] && g.Board[1][2] == g.Board[1][0]) return g.Board[1][0]
+		else return 0
+	}
+
+	if(g.Board[2][0]!=0){
+		if(g.Board[2][0] == g.Board[2][1] && g.Board[2][2] == g.Board[2][0]) return g.Board[2][0]
+		else return 0
+	}
+
+	if(g.Board[0][0]!=0){
+		if(g.Board[0][0] == g.Board[1][0] && g.Board[2][0] == g.Board[0][0]) return g.Board[0][0]
+		else return 0
+	}
+	
+	if(g.Board[0][1]!=0){
+		if(g.Board[0][1] == g.Board[1][1] && g.Board[2][1] == g.Board[0][1]) return g.Board[0][1]
+		else return 0
+	}
+
+	if(g.Board[0][2]!=0){
+		if(g.Board[0][2] == g.Board[1][2] && g.Board[2][2] == g.Board[0][2]) return g.Board[0][2]
+		else return 0
+	}
+
+	if(g.Board[0][0]!=0){
+		if(g.Board[0][0] == g.Board[1][1] && g.Board[2][2] == g.Board[0][0]) return g.Board[0][0]
+		else return 0
+	}
+	
+	if(g.Board[0][2]!=0){
+		if(g.Board[0][2] == g.Board[1][1] && g.Board[2][0] == g.Board[0][2]) return g.Board[0][2]
+		else return 0
+	}
 }
