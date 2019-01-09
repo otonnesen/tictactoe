@@ -65,11 +65,10 @@ function handleClick(e) {
 	} else if (y < gameArea.canvas.height) {
 		Y = 2;
 	}
-	drawX(X, Y);
+	drawO(X, Y);
 	return {
 		x: X,
 		y: Y,
 	}
 	
 }
-

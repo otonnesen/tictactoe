@@ -18,6 +18,7 @@ func New() *Game {
 
 func (g Game) String() string {
 	var b strings.Builder
+	fmt.Fprintf(&b, "Player %d's turn\n", g.Player)
 	for x := range g.Board {
 		for y := range g.Board[0] {
 			fmt.Fprintf(&b, "%d ", g.Board[x][y])

@@ -38,15 +38,18 @@ func Id(w http.ResponseWriter, req *http.Request) {
 			fmt.Fprintf(w, "Not a valid game")
 		}
 	case http.MethodPost:
-		if g, ok := games[id]; !ok {
-			resp := &api.MoveResponse{false, false}
-			w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Content-Type", "application/json")
+		if _, ok := games[id]; !ok {
+			resp := &api.MoveResponse{false, 0}
 			json.NewEncoder(w).Encode(resp)
 			return
 		}
 		m, err := api.NewMoveRequest(req)
 		if err != nil {
 			Error.Printf("Bad move request: %v\n", err)
+			resp := &api.MoveResponse{false, 0}
+			json.NewEncoder(w).Encode(resp)
+			return
 		}
 		g := games[id]
 		valid := g.CheckMove(m)
@@ -57,7 +60,6 @@ func Id(w http.ResponseWriter, req *http.Request) {
 		} else {
 			Info.Printf("Invalid move: %s", id)
 		}
-		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(resp)
 	}
 }
