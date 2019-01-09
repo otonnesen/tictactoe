@@ -12,7 +12,7 @@ type MoveRequest struct {
 
 type MoveResponse struct {
 	Valid  bool `json:"valid"`
-	Victor int  `json:"victor"`
+	Winner int  `json:"winner"`
 }
 
 func NewMoveRequest(req *http.Request) (*MoveRequest, error) {
