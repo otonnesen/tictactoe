@@ -8,12 +8,14 @@ import (
 )
 
 type Game struct {
-	Player int
-	Board  [][]int
+	Connected int
+	Player    int
+	Board     [][]int
+	Winner    int
 }
 
 func New() *Game {
-	return &Game{1, [][]int{[]int{0, 0, 0}, []int{0, 0, 0}, []int{0, 0, 0}}}
+	return &Game{0, 1, [][]int{[]int{0, 0, 0}, []int{0, 0, 0}, []int{0, 0, 0}}, 0}
 }
 
 func (g Game) String() string {
@@ -31,10 +33,12 @@ func (g Game) String() string {
 
 func (g *Game) CheckMove(m *api.MoveRequest) bool {
 	if m.Player != g.Player {
+		fmt.Printf("Wrong player\n")
 		return false
 	}
 
 	if g.Board[m.Move[0]][m.Move[1]] != 0 {
+		fmt.Printf("Space used\n")
 		return false
 	}
 
@@ -52,25 +56,29 @@ func (g *Game) applyMove(m *api.MoveRequest) {
 
 }
 
-func (g Game) CheckVictory() int {
+func (g *Game) CheckVictory() int {
 	for x := range g.Board {
 		if g.Board[x][0] == g.Board[x][1] && g.Board[x][1] == g.Board[x][2] {
+			g.Winner = g.Board[x][0]
 			return g.Board[x][0]
 		}
 	}
 
 	for y := range g.Board {
 		if g.Board[0][y] == g.Board[1][y] && g.Board[1][y] == g.Board[2][y] {
+			g.Winner = g.Board[0][y]
 			return g.Board[0][y]
 		}
 	}
 
 	if g.Board[0][0] == g.Board[1][1] && g.Board[1][1] == g.Board[2][2] {
+		g.Winner = g.Board[0][0]
 		return g.Board[0][0]
 	}
 
 	if g.Board[2][0] == g.Board[1][1] && g.Board[1][1] == g.Board[0][2] {
-		return g.Board[0][0]
+		g.Winner = g.Board[2][0]
+		return g.Board[2][0]
 	}
 
 	return 0

@@ -18,6 +18,7 @@ func main() {
 
 	http.HandleFunc("/", LogRequest(Root))
 	http.HandleFunc("/id/", LogRequest(Id))
+	http.HandleFunc("/getid/", LogRequest(GetId))
 	http.HandleFunc("/start/", LogRequest(Start))
 	http.HandleFunc("/test/", LogRequest(Test))
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))

@@ -11,25 +11,30 @@ const gameArea = {
 };
 
 gameArea.start(750, 750);
-gameArea.ctx.beginPath();
-gameArea.ctx.rect(gameArea.canvas.width/3-5, 20, 10, gameArea.canvas.height-40);
-gameArea.ctx.fillStyle = 'black';
-gameArea.ctx.fill()
+initCanvas();
 
-gameArea.ctx.beginPath();
-gameArea.ctx.rect(2*gameArea.canvas.width/3-5, 20, 10, gameArea.canvas.height-40);
-gameArea.ctx.fillStyle = 'black';
-gameArea.ctx.fill()
+function initCanvas() {
+	gameArea.ctx.beginPath();
+	gameArea.ctx.rect(gameArea.canvas.width/3-5, 20, 10, gameArea.canvas.height-40);
+	gameArea.ctx.fillStyle = 'black';
+	gameArea.ctx.fill()
 
-gameArea.ctx.beginPath();
-gameArea.ctx.rect(20, gameArea.canvas.height/3-5, gameArea.canvas.height-40, 10);
-gameArea.ctx.fillStyle = 'black';
-gameArea.ctx.fill()
+	gameArea.ctx.beginPath();
+	gameArea.ctx.rect(2*gameArea.canvas.width/3-5, 20, 10, gameArea.canvas.height-40);
+	gameArea.ctx.fillStyle = 'black';
+	gameArea.ctx.fill()
 
-gameArea.ctx.beginPath();
-gameArea.ctx.rect(20, 2*gameArea.canvas.height/3-5, gameArea.canvas.height-40, 10);
-gameArea.ctx.fillStyle = 'black';
-gameArea.ctx.fill()
+	gameArea.ctx.beginPath();
+	gameArea.ctx.rect(20, gameArea.canvas.height/3-5, gameArea.canvas.height-40, 10);
+	gameArea.ctx.fillStyle = 'black';
+	gameArea.ctx.fill()
+
+	gameArea.ctx.beginPath();
+	gameArea.ctx.rect(20, 2*gameArea.canvas.height/3-5, gameArea.canvas.height-40, 10);
+	gameArea.ctx.fillStyle = 'black';
+	gameArea.ctx.fill()
+}
+
 
 function drawX(x, y) {
 	gameArea.ctx.beginPath();
@@ -47,6 +52,23 @@ function drawO(x, y) {
 
 document.addEventListener('click', handleClick, false);
 
+// Get player id
+// TODO: Use cookies
+var playernum;
+window.onload = function() {
+	const params = JSON.stringify({id: window.location.pathname.replace('/id/', '')});
+	console.log(params);
+	getJSON('/getid/', params,
+		function (err, data) {
+			console.log(data);
+			if (err !== null) {
+				console.log('Error retrieving data: ' + err);
+			} else {
+				playernum = data.playernum;
+			}
+		});
+}
+
 function handleClick(e) {
 	// console.log('('+e.clientX+','+e.clientY+')');
 	let x = e.clientX;
@@ -59,7 +81,7 @@ function handleClick(e) {
 	} else if (x < gameArea.canvas.width) {
 		X = 2;
 	}
-	
+
 	if (y < gameArea.canvas.height/3) {
 		Y = 0;
 	} else if (y < 2*gameArea.canvas.height/3) {
@@ -68,7 +90,7 @@ function handleClick(e) {
 		Y = 2;
 	}
 	// drawX(X, Y);
-	const params = JSON.stringify({player: 1, move: [X,Y]});
+	const params = JSON.stringify({player: playernum, move: [X,Y]});
 	// console.log(params);
 	sendMove(window.location.pathname, params, {X: X, Y: Y});
 }
@@ -80,8 +102,38 @@ let sendMove = function (url, params, move) {
 				console.log('Error retrieving data: ' + err);
 			} else {
 				if (data.valid === true) {
-					drawX(move.X, move.Y);
+					updateCanvas(data);
 				}
 			}
 		});
 };
+
+let updateCanvas = function (data) {
+	gameArea.ctx.clearRect(0, 0, gameArea.canvas.width, gameArea.canvas.Height);
+	initCanvas();
+	for (i = 0; i < data.board.length; i++) {
+		for (j = 0; j < data.board[0].length; j++) {
+			if (data.board[i][j] == 1) {
+				drawX(i, j);
+			} else if (data.board[i][j] == 2) {
+				drawO(i, j);
+			}
+		}
+	}
+	if (data.winner !== 0) {
+		console.log('Winner is player ' + data.winner + '!');
+		clearInterval(gameLoopID);
+		return;
+	}
+};
+
+var gameLoopID = setInterval(function() {
+	getJSON(window.location.pathname, null,
+		function (err, data) {
+			if (err !== null) {
+				console.log('Error retrieving data: ' + err);
+			} else {
+				updateCanvas(data);
+			}
+		});
+}, 250);
