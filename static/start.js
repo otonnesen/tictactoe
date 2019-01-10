@@ -78,13 +78,13 @@ function handleClick(e) {
     let y = e.clientY;
     if (x > 10 && x < 170) {
 		if(y > 10 && y < 70){
-            //start button pressed
+            //New game button pressed
             console.log('New Game');
         }
     }
     if (x > 10 && x < 160) {
 		if(y > 100 && y < 160){
-            //start button pressed
+            //Join game button pressed
             console.log('Join Game');
         }
 	}
