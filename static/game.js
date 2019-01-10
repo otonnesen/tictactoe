@@ -34,21 +34,21 @@ gameArea.ctx.fill()
 function drawX(x, y) {
 	gameArea.ctx.beginPath();
 	gameArea.ctx.font = 2*gameArea.canvas.width/7 +'px Arial';
-	gameArea.ctx.fillStyle = "#2874A6";
+	gameArea.ctx.fillStyle = '#2874A6';
 	gameArea.ctx.fillText('X', gameArea.canvas.width/6 - 1.7*gameArea.canvas.width/18 + x*gameArea.canvas.width/3, gameArea.canvas.height/6 + 2*gameArea.canvas.width/18 + y*gameArea.canvas.height/3);
 }
 
 function drawO(x, y) {
 	gameArea.ctx.beginPath();
 	gameArea.ctx.font = 2*gameArea.canvas.width/7 +'px Arial';
-	gameArea.ctx.fillStyle = "#7B241C";
+	gameArea.ctx.fillStyle = '#7B241C';
 	gameArea.ctx.fillText('O', gameArea.canvas.width/6 - 2*gameArea.canvas.width/18 + x*gameArea.canvas.width/3, gameArea.canvas.height/6 + 2*gameArea.canvas.width/18 + y*gameArea.canvas.height/3);
 }
 
 document.addEventListener('click', handleClick, false);
 
 function handleClick(e) {
-	console.log('('+e.clientX+','+e.clientY+')');
+	// console.log('('+e.clientX+','+e.clientY+')');
 	let x = e.clientX;
 	let y = e.clientY;
 	let X, Y;
@@ -67,41 +67,21 @@ function handleClick(e) {
 	} else if (y < gameArea.canvas.height) {
 		Y = 2;
 	}
-	drawO(X, Y);
-	return {
-		x: X,
-		y: Y,
-	}
-	
+	// drawX(X, Y);
+	const params = JSON.stringify({player: 1, move: [X,Y]});
+	// console.log(params);
+	sendMove(window.location.pathname, params, {X: X, Y: Y});
 }
 
-//taken from loanshark
-
-let getJSON = function (url, params, callback) {
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', url, true);
-    xhr.setRequestHeader("Content-type", "application/json; charset=utf-8");
-
-    xhr.responseType = 'json';
-    xhr.onload = function () {
-        const status = xhr.status;
-        if (status === 200) {
-            callback(null, xhr.response);
-        } else {
-            callback(status, xhr.response);
-        }
-    };
-    xhr.send(params);
-};
-
-let getData = function (url, params) {
-    getJSON(url, params,
-        function (err, data) {
-            if (err !== null) {
-                console.log("Error retrieving data: " + err);
-            } else {
-                login(data['validate']);
-            }
-            //document.getElementById('submit').style.cursor = '';
-        });
+let sendMove = function (url, params, move) {
+	getJSON(url, params,
+		function (err, data) {
+			if (err !== null) {
+				console.log('Error retrieving data: ' + err);
+			} else {
+				if (data.valid === true) {
+					drawX(move.X, move.Y);
+				}
+			}
+		});
 };

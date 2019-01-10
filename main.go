@@ -20,6 +20,7 @@ func main() {
 	http.HandleFunc("/id/", LogRequest(Id))
 	http.HandleFunc("/start/", LogRequest(Start))
 	http.HandleFunc("/test/", LogRequest(Test))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 
 	Info.Printf("Server running on port %s\n", port)
 	http.ListenAndServe(":"+port, nil)
