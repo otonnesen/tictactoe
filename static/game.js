@@ -6,8 +6,7 @@ const gameArea = {
 		// this.canvas.style.border='2px solid black';
 		this.ctx = this.canvas.getContext('2d');
 		document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-	},
-	components: []
+	}
 };
 
 gameArea.start(750, 750);
