@@ -50,7 +50,21 @@ var rectHeight = 50;
 var rectWidth = 150;
 var rectX = 10;
 var rectY = 10;
-ctx.fillText("Click to Start",rectX+(rectWidth/2),rectY+(rectHeight/2));
+ctx.fillText("New Game",rectX+(rectWidth/2),rectY+(rectHeight/2));
+
+ctx.lineWidth = 4;
+ctx.strokeStyle = "#000000";
+ctx.fillStyle = "#abc";
+roundRect(ctx, 10, 100, 150, 50, 10, true);
+ctx.font="20px Georgia";
+ctx.textAlign="center"; 
+ctx.textBaseline = "middle";
+ctx.fillStyle = "#000000";
+var rectHeight = 50;
+var rectWidth = 150;
+var rectX = 10;
+var rectY = 100;
+ctx.fillText("Join Game",rectX+(rectWidth/2),rectY+(rectHeight/2));
 
 
   
@@ -65,7 +79,13 @@ function handleClick(e) {
     if (x > 10 && x < 170) {
 		if(y > 10 && y < 70){
             //start button pressed
-            console.log('START');
+            console.log('New Game');
+        }
+    }
+    if (x > 10 && x < 160) {
+		if(y > 100 && y < 160){
+            //start button pressed
+            console.log('Join Game');
         }
 	}
 }
