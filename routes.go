@@ -3,8 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"math/rand"
 	"net/http"
+	"path/filepath"
 	"time"
 
 	"github.com/otonnesen/tictactoe/api"
@@ -18,22 +20,26 @@ func Root(w http.ResponseWriter, req *http.Request) {
 }
 
 func Test(w http.ResponseWriter, req *http.Request) {
-	_, err := api.NewMoveRequest(req)
+	tmpl := template.Must(template.ParseFiles(filepath.Join("templates", "game.tmpl")))
+	err := tmpl.Execute(w, nil)
 	if err != nil {
-		Error.Printf("Bad move request: %v\n", err)
+		Error.Printf("Error executing template: %v", err)
 	}
-	resp := &api.MoveResponse{true, 0}
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(resp)
 }
 
 func Id(w http.ResponseWriter, req *http.Request) {
 	id := req.URL.Path[len("/id/"):]
 	switch req.Method {
 	case http.MethodGet:
-		w.Header().Set("Content-Type", "text/plain")
-		if g, ok := games[id]; ok {
-			fmt.Fprintf(w, "%s", g)
+		w.Header().Set("Content-Type", "text/html")
+		if _, ok := games[id]; ok {
+			// fmt.Fprintf(w, "%s", g)
+			fp := filepath.Join("templates", "game.tmpl")
+			tmpl := template.Must(template.ParseFiles(fp))
+			err := tmpl.Execute(w, nil)
+			if err != nil {
+				Error.Printf("Error executing template: %v", err)
+			}
 		} else {
 			fmt.Fprintf(w, "Not a valid game")
 		}
