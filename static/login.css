@@ -1,0 +1,92 @@
+img {
+    max-width: 35%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form {
+    text-align: center;
+}
+
+logo {
+    text-align: center;
+    font-size: 3em;
+    color: #008CBA;
+
+}
+
+input {
+    width: 80%;
+    padding: 1%;
+    margin: 1% auto;
+    display: block;
+    
+    /* margin-right: 210px; */
+}
+
+button {
+    width: 35%;
+    margin: 1% auto;
+    background-color: #008CBA;
+    border: none;
+    color: white;
+    font-size: 1em;
+    padding: 0.5em;
+    border-radius: 6px;
+}
+
+button:hover {
+    background-color: #0576BA;
+    cursor: pointer;
+}
+
+.create {
+    margin: auto;
+    padding: 1%;
+    text-align: center;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a.acc:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: none;
+}
+
+#login {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    padding: 2%;
+}
+
+@keyframes fade {
+    0% { opacity: 0; }
+    10% { opacity: 0.9; }
+    90% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.loginSuccess {
+    //border: 2px solid chartreuse;
+    background-color: #befbbf;
+    opacity: 0;
+    animation: fade 4s linear;
+}
+
+.loginFailure {
+    //border: 2px solid crimson;
+    background-color: #ffa3a0;
+    opacity: 0;
+    animation: fade 4s linear;
+}

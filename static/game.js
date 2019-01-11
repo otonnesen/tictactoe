@@ -6,8 +6,7 @@ const gameArea = {
 		// this.canvas.style.border='2px solid black';
 		this.ctx = this.canvas.getContext('2d');
 		document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-	},
-	components: []
+	}
 };
 
 gameArea.start(750, 750);
@@ -46,7 +45,8 @@ function drawX(x, y) {
 function drawO(x, y) {
 	gameArea.ctx.beginPath();
 	gameArea.ctx.font = 2*gameArea.canvas.width/7 +'px Arial';
-	gameArea.ctx.fillStyle = '#7B241C';
+
+	gameArea.ctx.fillStyle = "#7B241C"; 
 	gameArea.ctx.fillText('O', gameArea.canvas.width/6 - 2*gameArea.canvas.width/18 + x*gameArea.canvas.width/3, gameArea.canvas.height/6 + 2*gameArea.canvas.width/18 + y*gameArea.canvas.height/3);
 }
 
