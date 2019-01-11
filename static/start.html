@@ -12,11 +12,11 @@
 		window.location.href = "/start";
     }
     function joinGame() {
-		window.location.href = ;
+		window.location.href = "/id/"+document.getElementById("gameID").value;
 	}
 </script>
 
-<input type="gameID" placeholder="Enter Game ID" id="gameID"/>
+<input placeholder="Enter Game ID" id="gameID"/>
 
 <form role="form" onsubmit="newGame(); return false;">
     <button type = "newgame" id="newgame">New Game</button>
