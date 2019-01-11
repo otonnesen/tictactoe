@@ -2,15 +2,10 @@
 
 <head>
 	<title>Tic-Tac-Toe</title>
-	<link rel="stylesheet" type="text/css" href="login.css">
+	<link rel="stylesheet" type="text/css" href="start.css">
 </head>
 
-<logo role="logo">
-    <h1>
-        TIC TAC TOE
-    </h1>
-</logo>
-
+<h1 id="title">TIC-TAC-TOE</h1>
 
 <script>
 	function newGame() {
@@ -21,17 +16,15 @@
 	}
 </script>
 
-
 <input type="gameID" placeholder="Enter Game ID" id="gameID"/>
 
 <form role="form" onsubmit="newGame(); return false;">
     <button type = "newgame" id="newgame">New Game</button>
-
 </form>
 
 <form role="form" onsubmit="joinGame(); return false;">
         <button type="submit" id="submit">Join Game</button>
-    </form>
+</form>
 
 <!-- <body>
 	<script src='./start.js'></script>
