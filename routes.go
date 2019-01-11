@@ -16,7 +16,12 @@ import (
 var games = make(map[string]*game.Game)
 
 func Root(w http.ResponseWriter, req *http.Request) {
-	w.Header().Add("Content-Type", "text/plain")
+	w.Header().Add("Content-Type", "text/html")
+	tmpl := template.Must(template.ParseFiles(filepath.Join("templates", "start.tmpl")))
+	err := tmpl.Execute(w, nil)
+	if err != nil {
+		Error.Printf("Error executing template: %v", err)
+	}
 }
 
 func Test(w http.ResponseWriter, req *http.Request) {

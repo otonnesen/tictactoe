@@ -5,11 +5,18 @@ const gameArea = {
 		this.canvas.height = height;
 		// this.canvas.style.border='2px solid black';
 		this.ctx = this.canvas.getContext('2d');
-		document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+		document.body.insertBefore(this.canvas, document.body.childNodes[1]);
 	}
 };
 
-gameArea.start(750, 750);
+let id = document.createElement('p');
+id.style.textAlign = 'center';
+id.style.font = '3em Arial';
+id.style.color = '#008cba';
+id.innerHTML = 'Game ID: ' + document.location.pathname.replace('/id/', '');
+document.body.insertBefore(id, document.body.childNodes[0]);
+
+gameArea.start(500, 500);
 initCanvas();
 
 function initCanvas() {
@@ -50,7 +57,7 @@ function drawO(x, y) {
 	gameArea.ctx.fillText('O', gameArea.canvas.width/6 - 2*gameArea.canvas.width/18 + x*gameArea.canvas.width/3, gameArea.canvas.height/6 + 2*gameArea.canvas.width/18 + y*gameArea.canvas.height/3);
 }
 
-document.addEventListener('click', handleClick, false);
+addEventListener('click', handleClick, false);
 
 // Get player id
 // TODO: Use cookies
@@ -70,9 +77,8 @@ window.onload = function() {
 }
 
 function handleClick(e) {
-	// console.log('('+e.clientX+','+e.clientY+')');
 	let x = e.clientX;
-	let y = e.clientY;
+	let y = e.clientY - e.target.getBoundingClientRect().top;
 	let X, Y;
 	if (x < gameArea.canvas.width/3) {
 		X = 0;
@@ -89,9 +95,7 @@ function handleClick(e) {
 	} else if (y < gameArea.canvas.height) {
 		Y = 2;
 	}
-	// drawX(X, Y);
 	const params = JSON.stringify({player: playernum, move: [X,Y]});
-	// console.log(params);
 	sendMove(window.location.pathname, params, {X: X, Y: Y});
 }
 
@@ -109,7 +113,7 @@ let sendMove = function (url, params, move) {
 };
 
 let updateCanvas = function (data) {
-	gameArea.ctx.clearRect(0, 0, gameArea.canvas.width, gameArea.canvas.Height);
+	/*please run my child*/gameArea.ctx.clearRect(0, 0, gameArea.canvas.width, gameArea.canvas.Height);
 	initCanvas();
 	for (i = 0; i < data.board.length; i++) {
 		for (j = 0; j < data.board[0].length; j++) {
