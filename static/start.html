@@ -5,9 +5,12 @@
 	<link rel="stylesheet" type="text/css" href="login.css">
 </head>
 
-<form role = "form" onsubmit = "newGame(); return false;">
-	<button type = "newgame" id="newgame">New Game</button>
-</form>
+<logo role="logo">
+    <h1>
+        TIC TAC TOE
+    </h1>
+</logo>
+
 
 <script>
 	function newGame() {
@@ -17,6 +20,7 @@
 
 <form role="form" onsubmit="authenticate(); return false;">
     <input type="gameID" placeholder="Enter Game ID" id="gameID" required/>
+    <button type = "newgame" id="newgame">New Game</button>
     <button type="submit" id="submit">Join Game</button>
 </form>
 
