@@ -5,9 +5,12 @@ const gameArea = {
 		this.canvas.height = height;
 		// this.canvas.style.border='2px solid black';
 		this.ctx = this.canvas.getContext('2d');
-		document.body.insertBefore(this.canvas, document.body.childNodes[1]);
+		document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 	}
 };
+
+gameArea.start(500, 500);
+initCanvas();
 
 let id = document.createElement('p');
 id.style.textAlign = 'center';
@@ -15,9 +18,6 @@ id.style.font = '3em Arial';
 id.style.color = '#008cba';
 id.innerHTML = 'Game ID: ' + document.location.pathname.replace('/id/', '');
 document.body.insertBefore(id, document.body.childNodes[0]);
-
-gameArea.start(500, 500);
-initCanvas();
 
 function initCanvas() {
 	gameArea.ctx.beginPath();
@@ -41,7 +41,6 @@ function initCanvas() {
 	gameArea.ctx.fill()
 }
 
-
 function drawX(x, y) {
 	gameArea.ctx.beginPath();
 	gameArea.ctx.font = 2*gameArea.canvas.width/7 +'px Arial';
@@ -53,7 +52,7 @@ function drawO(x, y) {
 	gameArea.ctx.beginPath();
 	gameArea.ctx.font = 2*gameArea.canvas.width/7 +'px Arial';
 
-	gameArea.ctx.fillStyle = "#7B241C"; 
+	gameArea.ctx.fillStyle = "#7B241C";
 	gameArea.ctx.fillText('O', gameArea.canvas.width/6 - 2*gameArea.canvas.width/18 + x*gameArea.canvas.width/3, gameArea.canvas.height/6 + 2*gameArea.canvas.width/18 + y*gameArea.canvas.height/3);
 }
 
@@ -77,23 +76,31 @@ window.onload = function() {
 }
 
 function handleClick(e) {
-	let x = e.clientX;
-	let y = e.clientY - e.target.getBoundingClientRect().top;
+	let x = e.clientX - gameArea.canvas.getBoundingClientRect().left;
+	let y = e.clientY - gameArea.canvas.getBoundingClientRect().top;
 	let X, Y;
-	if (x < gameArea.canvas.width/3) {
+	if (x < 0) {
+		X = -1;
+	} else if (x < gameArea.canvas.width/3) {
 		X = 0;
 	} else if (x < 2*gameArea.canvas.width/3) {
 		X = 1;
 	} else if (x < gameArea.canvas.width) {
 		X = 2;
+	} else {
+		X = -1;
 	}
 
-	if (y < gameArea.canvas.height/3) {
+	if (y < 0) {
+		Y = -1;
+	} else if (y < gameArea.canvas.height/3) {
 		Y = 0;
 	} else if (y < 2*gameArea.canvas.height/3) {
 		Y = 1;
 	} else if (y < gameArea.canvas.height) {
 		Y = 2;
+	} else {
+		Y = -1;
 	}
 	const params = JSON.stringify({player: playernum, move: [X,Y]});
 	sendMove(window.location.pathname, params, {X: X, Y: Y});
@@ -113,7 +120,7 @@ let sendMove = function (url, params, move) {
 };
 
 let updateCanvas = function (data) {
-	/*please run my child*/gameArea.ctx.clearRect(0, 0, gameArea.canvas.width, gameArea.canvas.Height);
+	gameArea.ctx.clearRect(0, 0, gameArea.ctx.canvas.width, gameArea.ctx.canvas.height);
 	initCanvas();
 	for (i = 0; i < data.board.length; i++) {
 		for (j = 0; j < data.board[0].length; j++) {
@@ -127,6 +134,7 @@ let updateCanvas = function (data) {
 	if (data.winner !== 0) {
 		console.log('Winner is player ' + data.winner + '!');
 		clearInterval(gameLoopID);
+		// TODO: End game
 		return;
 	}
 };
